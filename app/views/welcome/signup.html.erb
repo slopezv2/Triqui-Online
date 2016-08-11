@@ -1,2 +1,9 @@
-<h1>Welcome#signup</h1>
-<p>Find me in app/views/welcome/signup.html.erb</p>
+<h1>Registro</h1>
+
+<%= form_for :user, url: '/register' do |f| %>
+
+  Correo: <%= f.text_field :email, required: true %>
+  Clave: <%= f.password_field :password, required: true %>
+  Confirme la clave: <%= f.password_field :password_confirmation, required: true %>
+  <%= f.submit "Crear" %>
+<% end %>
