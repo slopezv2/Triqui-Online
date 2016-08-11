@@ -1,0 +1,28 @@
+<div class="mdl-grid">
+  <div class="mdl-cell mdl-cell--4-col"></div>
+  <div class="mdl-cell mdl-cell--4-col ">
+    <%= image_tag 'triki' %>
+    
+    <div class="mdl-card mdl-shadow--2dp mdl-cell--middle">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Iniciar Sesión</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <%= form_tag '/login' do %>
+                Email: <%= text_field_tag :email,nil, :class => 'mdl-textfield__input' %>
+                Password: <%= password_field_tag :password, nil,  :class => 'mdl-textfield__input'  %>
+                
+        </div>
+        <div class="mdl-card__actions mdl-card--border mdl-typography--text-center">
+            <%= submit_tag "Entrar", class: "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" %>
+            <% end %>
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+            Crear cuenta
+            </a>
+        </div>
+    </div>
+  </div>
+  <div class="mdl-cell mdl-cell--4-col"></div>
+</div>
+
+   
