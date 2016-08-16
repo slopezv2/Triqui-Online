@@ -11,18 +11,27 @@ class WelcomeController < ApplicationController
      flash.now[:error] = "Error en las credenciales de usuario"
       render action: "index"
     end
-    end
   end
 
   def signup
   end
 
   def profile
+    unless autenticado
+       flash[:error] = "No ha iniciado session"
+       redirect_to root_url
+    end
+    @user = User.find_by(id: session[:user_id])
   end
 
   def game
+    unless autenticado
+       flash[:error] = "No ha iniciado session"
+       redirect_to root_url
+    end
   end
-  def create
+
+    def create
     user = User.new(create_params)
     if user.save
       flash[:notice] = "Cuenta creada exitosamente"
@@ -33,6 +42,12 @@ class WelcomeController < ApplicationController
     end
   end
 
+  def salir
+    session.delete(:user_id)
+    flash[:notice] = "Sesión cerrada exitosamente"
+    redirect_to root_url
+  end
+
   private
 
   def create_params
@@ -40,4 +55,5 @@ class WelcomeController < ApplicationController
   end
   def login_params
     params.permit(:email, :password,:authenticity_token)
+  end
 end

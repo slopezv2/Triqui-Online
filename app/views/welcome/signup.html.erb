@@ -1,9 +1,23 @@
-<h1>Registro</h1>
-
-<%= form_for :user, url: '/register' do |f| %>
-
-  Correo: <%= f.text_field :email, required: true %>
-  Clave: <%= f.password_field :password, required: true %>
-  Confirme la clave: <%= f.password_field :password_confirmation, required: true %>
-  <%= f.submit "Crear" %>
+<div class="mdl-grid">
+  <div class="mdl-cell mdl-cell--4-col"></div>
+  <div class="mdl-cell mdl-cell--4-col">
+    <h1>Registro</h1>
+    <%= form_for :user, url: '/register' do |f| %>
+      <div class="mdl-textfield mdl-js-textfield">
+        <%= f.email_field :email, required: true, class: "mdl-textfield__input" %>
+        <%= f.label :email, class: "mdl-textfield__label" %>
+      </div>
+      <div class="mdl-textfield mdl-js-textfield">
+        <%= f.password_field :password, required: true, class: "mdl-textfield__input" %>
+        <%= f.label :password, class: "mdl-textfield__label" %>
+      </div>
+      <div class="mdl-textfield mdl-js-textfield">  
+        <%= f.password_field :password_confirmation, required: true, class: "mdl-textfield__input" %>
+        <%= f.label :password_confirmation, class: "mdl-textfield__label" %>
+      </div>
+      <br>
+      <%= f.submit "Crear", class: "mdl-button mdl-js-button mdl-button--raised mdl-button--primary" %>
 <% end %>
+  </div>
+  <div class="mdl-cell mdl-cell--4-col"></div>
+</div>
