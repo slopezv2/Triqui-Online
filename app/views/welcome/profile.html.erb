@@ -1,7 +1,19 @@
 <div class="mdl-grid">
-  <div class="mdl-cell mdl-cell--5-col"></div>
-  <div class="mdl-cell mdl-cell--2-col">
-      <%= image_tag @user.gravatar_url %>
+  <div class="mdl-cell mdl-cell--4-col"></div>
+  <div class="mdl-cell mdl-cell--4-col">
+      <div class="mdl-cell--3-offset">
+        <%= image_tag @user.gravatar_url %>
+      </div>
+        <div><h4><%= @user.email %></h4></div>
+        <div><h5>Partidas Jugadas</h5><%= @user.total_games %></div>
+        <div><h5>Partidas Ganadas</h5><%= @user.won_games %></div>
+        <div><h5>Partidas Perdidas</h5><%= @user.lost_games %></div>
+        <div class="mdl-cell--3-offset">
+          <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+            Jugar Partida
+          </button>
+      </div>
   </div>
-  <div class="mdl-cell mdl-cell--5-col"></div>
+  <div class="mdl-cell mdl-cell--4-col"></div>
+</div>
 
