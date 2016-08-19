@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+# Redis for game
+gem 'redis', '~> 3.0'
 #Gravatar
 gem 'gravtastic'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
