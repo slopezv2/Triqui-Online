@@ -16,16 +16,15 @@ $(App.room = App.cable.subscriptions.create "RoomChannel",
     # Called when there's incoming data on the websocket for this channel
     switch data.action
       when "game_start"
-        App.game = new Partida(data)
         App.game.inicio(data, App);
         cargarListeners(App.game);
         @printMessage("Game started!")
       when "make_move"
-        console.log(data.msg);
         App.game.hacerMovimiento(data.msg.message)
-
       when "opponent_forfeits"
         @printMessage("Opponent forfeits. You win!")
+      when "reset"
+        App.game.reiniciar();
 
 $ ->
   App.game = App.game = new Partida();

@@ -18,7 +18,7 @@ class RoomChannel < ApplicationCable::Channel
   def make_move(data)
     Game.make_move(email, data)
   end
-  def message(data)
-    Game.make_move(email, data)
+  def reset
+    Game.reset
   end
 end

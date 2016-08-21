@@ -25,4 +25,9 @@ class Game
 
     ActionCable.server.broadcast "player_#{opponent}", {action: "make_move", msg: move_string}
   end
+
+  def self.reset(email)
+    opponent = opponent_for(email)
+    ActionCable.server.broadcast "player_#{opponent}", {action: "reset"}
+  end
 end
