@@ -28,5 +28,5 @@ $(App.room = App.cable.subscriptions.create "RoomChannel",
         @printMessage("Opponent forfeits. You win!")
 
 $ ->
-  App.game = App.game = new Partida()
+  App.game = App.game = new Partida();
 );
