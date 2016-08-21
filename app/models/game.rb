@@ -2,8 +2,8 @@ class Game
   def self.start(email1, email2)
     white, black = [email1, email2].shuffle
 
-    ActionCable.server.broadcast "player_#{white}", {action: "game_start", msg: "white"}
-    ActionCable.server.broadcast "player_#{black}", {action: "game_start", msg: "black"}
+    ActionCable.server.broadcast "player_#{white}", {action: "game_start", msg: true}
+    ActionCable.server.broadcast "player_#{black}", {action: "game_start", msg: false}
 
     REDIS.set("opponent_for:#{white}", black)
     REDIS.set("opponent_for:#{black}", white)
@@ -21,7 +21,7 @@ class Game
 
   def self.make_move(email, data)
     opponent = opponent_for(email)
-    move_string = "#{data["from"]}-#{data["to"]}"
+    move_string = data
 
     ActionCable.server.broadcast "player_#{opponent}", {action: "make_move", msg: move_string}
   end

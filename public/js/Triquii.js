@@ -1,12 +1,8 @@
 /// <reference path="jquery.d.ts" />
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 /**
  * Representa un jugador
  */
+var App;
 var Jugador = (function () {
     /**
      * Constructor del objeto Jugador
@@ -73,35 +69,39 @@ var Jugador = (function () {
     };
     return Jugador;
 }());
-var Maquina = (function (_super) {
-    __extends(Maquina, _super);
-    function Maquina() {
-        _super.apply(this, arguments);
-    }
-    Maquina.prototype.realizarJugada = function (tablero) {
-        var jugadaValida = false;
-        while (!jugadaValida) {
-            var fila = Math.floor((Math.random() * 10)) % 3;
-            var columna = Math.floor((Math.random() * 10)) % 3;
-            if (tablero[fila][columna] == 2) {
-                jugadaValida = true;
-                tablero[fila][columna] = this.Caracter;
-            }
-        }
-        return [fila, columna];
-    };
-    return Maquina;
-}(Jugador));
+// class Jugador extends Jugador{
+//     public realizarJugada(tablero: number[][]) : number[]{
+//         var jugadaValida = false;
+//         while(!jugadaValida){
+//             var fila = Math.floor((Math.random() * 10)) % 3;
+//             var columna = Math.floor((Math.random() * 10)) % 3;
+//             if(tablero[fila][columna] == 2){
+//                 jugadaValida = true;
+//                 tablero[fila][columna] = this.Caracter
+//             }  
+//         }
+//         return [fila,columna];
+//     }
+// }
 var Partida = (function () {
     function Partida() {
         this.tablero = [[2, 2, 2], [2, 2, 2,], [2, 2, 2]];
-        this.maquina = new Maquina(0);
+        this.oponente = new Jugador(0);
         this.persona = new Jugador(1);
     }
-    Partida.prototype.inicio = function () {
+    Partida.prototype.inicio = function (partida_activa, nodo) {
         this.tablero = [[2, 2, 2], [2, 2, 2,], [2, 2, 2]];
-        this.partidaActiva = true;
+        this.partidaActiva = partida_activa;
+        this.nodo = nodo;
+        console.log(nodo);
     };
+    Object.defineProperty(Partida.prototype, "PartidaActiva", {
+        get: function () {
+            return this.partidaActiva;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Partida.prototype.dibujarJugada = function (ctx, caracter) {
         if (caracter == Partida.CARACTER_O) {
             var centerX = ctx.canvas.width / 2;
@@ -126,89 +126,140 @@ var Partida = (function () {
             ctx.stroke();
         }
     };
-    Partida.prototype.revisarMovimiento = function (idCanvas) {
+    Partida.prototype.hacerMovimiento = function (idCanvas) {
+        var caracter = this.oponente.Caracter;
         if (this.partidaActiva) {
-            var caracter = this.persona.Caracter;
-            var numero = parseInt(idCanvas.charAt(1));
-            $('#' + idCanvas).unbind('click');
-            var canvas = $('#' + idCanvas)[0];
-            var ctx = canvas.getContext('2d');
-            this.dibujarJugada(ctx, caracter);
-            //alert(idCanvas);
-            switch (numero) {
-                case 0:
-                    this.tablero[0][0] = caracter;
-                    break;
-                case 1:
-                    this.tablero[0][1] = caracter;
-                    break;
-                case 2:
-                    this.tablero[0][2] = caracter;
-                    break;
-                case 3:
-                    this.tablero[1][0] = caracter;
-                    break;
-                case 4:
-                    this.tablero[1][1] = caracter;
-                    break;
-                case 5:
-                    this.tablero[1][2] = caracter;
-                    break;
-                case 6:
-                    this.tablero[2][0] = caracter;
-                    break;
-                case 7:
-                    this.tablero[2][1] = caracter;
-                    break;
-                case 8:
-                    this.tablero[2][2] = caracter;
-                    break;
-                default:
-                    break;
-            }
-            ;
-            if (!this.verSiTerminoPartida()) {
-                var jugadaMaquina = this.maquina.realizarJugada(this.tablero);
-                var etiqueta = Partida.tableroEtiquetas[jugadaMaquina[0]][jugadaMaquina[1]];
-                $('#' + etiqueta).unbind('click');
-                canvas = $('#' + etiqueta)[0];
-                var ctx = canvas.getContext('2d');
-                caracter = this.maquina.Caracter;
-                this.dibujarJugada(ctx, caracter);
-                if (this.verSiTerminoPartida()) {
-                    this.partidaActiva = false;
-                }
-            }
-            else {
-                this.partidaActiva = false;
-            }
+            caracter = this.persona.Caracter;
         }
+        var numero = parseInt(idCanvas.charAt(1));
+        $('#' + idCanvas).unbind('click');
+        var canvas = $('#' + idCanvas)[0];
+        var ctx = canvas.getContext('2d');
+        this.dibujarJugada(ctx, caracter);
+        //alert(idCanvas);
+        switch (numero) {
+            case 0:
+                this.tablero[0][0] = caracter;
+                break;
+            case 1:
+                this.tablero[0][1] = caracter;
+                break;
+            case 2:
+                this.tablero[0][2] = caracter;
+                break;
+            case 3:
+                this.tablero[1][0] = caracter;
+                break;
+            case 4:
+                this.tablero[1][1] = caracter;
+                break;
+            case 5:
+                this.tablero[1][2] = caracter;
+                break;
+            case 6:
+                this.tablero[2][0] = caracter;
+                break;
+            case 7:
+                this.tablero[2][1] = caracter;
+                break;
+            case 8:
+                this.tablero[2][2] = caracter;
+                break;
+            default:
+                break;
+        }
+        ;
+        if (this.partidaActiva) {
+            this.nodo.room.make_move(idCanvas);
+        }
+        this.partidaActiva = !this.partidaActiva;
+        this.verSiTerminoPartida();
     };
-    Partida.prototype.ganaMaquina = function () {
-        mostrarGananor("La Maquina");
-        this.maquina.ganar();
+    // public revisarMovimiento(idCanvas : string){
+    //     if(this.partidaActiva){
+    //         var caracter = this.persona.Caracter;
+    //         var numero =  parseInt(idCanvas.charAt(1));
+    //         $('#'+idCanvas).unbind('click');
+    //         var canvas = <HTMLCanvasElement>$('#'+idCanvas)[0];
+    //         var ctx = canvas.getContext('2d');
+    //         this.dibujarJugada(ctx,caracter);
+    //         //alert(idCanvas);
+    //         switch(numero){
+    //             case 0:
+    //                 this.tablero[0][0] = caracter;
+    //                 break;
+    //             case 1:
+    //                 this.tablero[0][1] = caracter;
+    //                 break;
+    //             case 2:
+    //                 this.tablero[0][2] = caracter;
+    //                 break;
+    //             case 3:
+    //                 this.tablero[1][0] = caracter;
+    //                 break;
+    //             case 4:
+    //                 this.tablero[1][1] = caracter;
+    //                 break;
+    //             case 5:
+    //                 this.tablero[1][2] = caracter;
+    //                 break;
+    //             case 6:
+    //                 this.tablero[2][0] = caracter;
+    //                 break;
+    //             case 7:
+    //                 this.tablero[2][1] = caracter;
+    //                 break;
+    //             case 8:
+    //                 this.tablero[2][2] = caracter;
+    //                 break;
+    //             default:
+    //                 break;
+    //         };
+    //         if(!this.verSiTerminoPartida()){
+    //             var jugadaJugador: number[] = this.oponente.realizarJugada(this.tablero);
+    //             var etiqueta = Partida.tableroEtiquetas[jugadaJugador[0]][jugadaJugador[1]];
+    //             $('#'+etiqueta).unbind('click');
+    //             canvas = <HTMLCanvasElement> $('#'+etiqueta)[0];
+    //             var ctx = canvas.getContext('2d');
+    //             caracter = this.oponente.Caracter;
+    //             this.dibujarJugada(ctx,caracter);
+    //             if(this.verSiTerminoPartida()){
+    //                 this.partidaActiva = false;
+    //             }
+    //         }else{
+    //             this.partidaActiva = false;
+    //         }
+    //     }
+    // }
+    Partida.prototype.ganaJugador = function () {
+        mostrarGanador("El oponente");
+        this.oponente.ganar();
         this.persona.perder();
-        actualizarPuntuaciones(this.persona.estadisticasATexto(), this.maquina.estadisticasATexto());
+        actualizarPuntuaciones(this.persona.estadisticasATexto(), this.oponente.estadisticasATexto());
     };
     Partida.prototype.ganaPersona = function () {
-        mostrarGananor("La Persona");
-        this.maquina.perder();
+        mostrarGanador("La Persona");
+        this.oponente.perder();
         this.persona.ganar();
-        actualizarPuntuaciones(this.persona.estadisticasATexto(), this.maquina.estadisticasATexto());
+        actualizarPuntuaciones(this.persona.estadisticasATexto(), this.oponente.estadisticasATexto());
     };
     Partida.prototype.empate = function () {
-        mostrarGananor("Nadie, hay un empate");
-        this.maquina.empatar();
+        mostrarGanador("Nadie, hay un empate");
+        this.oponente.empatar();
         this.persona.empatar();
-        actualizarPuntuaciones(this.persona.estadisticasATexto(), this.maquina.estadisticasATexto());
+        actualizarPuntuaciones(this.persona.estadisticasATexto(), this.oponente.estadisticasATexto());
+    };
+    Partida.prototype.reiniciar = function () {
+        limpiarCanvas();
+        cargarListeners(this);
     };
     Partida.prototype.verSiTerminoPartida = function () {
         for (var comparador = 0; comparador < 2; comparador++) {
             //Primera linea horizontal
             if (this.tablero[0][0] == comparador && this.tablero[0][1] == comparador && this.tablero[0][2] == comparador) {
                 if (comparador == 0) {
-                    //maquina
-                    this.ganaMaquina();
+                    //oponente
+                    this.ganaJugador();
                 }
                 else {
                     //Persona
@@ -219,8 +270,8 @@ var Partida = (function () {
             //Segunda linea horizontal
             if (this.tablero[1][0] == comparador && this.tablero[1][1] == comparador && this.tablero[1][2] == comparador) {
                 if (comparador == 0) {
-                    //maquina
-                    this.ganaMaquina();
+                    //oponente
+                    this.ganaJugador();
                 }
                 else {
                     //Persona
@@ -231,8 +282,8 @@ var Partida = (function () {
             //Tercera linea horizontal
             if (this.tablero[2][0] == comparador && this.tablero[2][1] == comparador && this.tablero[2][2] == comparador) {
                 if (comparador == 0) {
-                    //maquina
-                    this.ganaMaquina();
+                    //oponente
+                    this.ganaJugador();
                 }
                 else {
                     //Persona
@@ -243,8 +294,8 @@ var Partida = (function () {
             //Primera linea vertical
             if (this.tablero[0][0] == comparador && this.tablero[1][0] == comparador && this.tablero[2][0] == comparador) {
                 if (comparador == 0) {
-                    //maquina
-                    this.ganaMaquina();
+                    //oponente
+                    this.ganaJugador();
                 }
                 else {
                     //Persona
@@ -255,8 +306,8 @@ var Partida = (function () {
             //Segunda linea vertical
             if (this.tablero[0][1] == comparador && this.tablero[1][1] == comparador && this.tablero[2][1] == comparador) {
                 if (comparador == 0) {
-                    //maquina
-                    this.ganaMaquina();
+                    //oponente
+                    this.ganaJugador();
                 }
                 else {
                     //Persona
@@ -267,8 +318,8 @@ var Partida = (function () {
             //tercera linea vertical
             if (this.tablero[0][2] == comparador && this.tablero[1][2] == comparador && this.tablero[2][2] == comparador) {
                 if (comparador == 0) {
-                    //maquina
-                    this.ganaMaquina();
+                    //oponente
+                    this.ganaJugador();
                 }
                 else {
                     //Persona
@@ -279,8 +330,8 @@ var Partida = (function () {
             //diagonal de izquierda a derecha
             if (this.tablero[0][0] == comparador && this.tablero[1][1] == comparador && this.tablero[2][2] == comparador) {
                 if (comparador == 0) {
-                    //maquina
-                    this.ganaMaquina();
+                    //oponente
+                    this.ganaJugador();
                 }
                 else {
                     //Persona
@@ -291,8 +342,8 @@ var Partida = (function () {
             //diagonal de derecha a izquierda
             if (this.tablero[0][2] == comparador && this.tablero[1][1] == comparador && this.tablero[2][0] == comparador) {
                 if (comparador == 0) {
-                    //maquina
-                    this.ganaMaquina();
+                    //oponente
+                    this.ganaJugador();
                 }
                 else {
                     //Persona
@@ -317,25 +368,20 @@ var Partida = (function () {
     Partida.CARACTER_X = 1;
     return Partida;
 }());
-function mostrarGananor(ganador) {
+function mostrarGanador(ganador) {
     var snackbarContainer = $('#demo-toast-example')[0];
     var data = { message: 'El ganador es ' + ganador, timeout: 5000 };
     snackbarContainer.MaterialSnackbar.showSnackbar(data);
 }
-function actualizarPuntuaciones(textoPersona, textoMaquina) {
-    var txMaquina = $('#datos-maquina')[0];
-    txMaquina.value = textoMaquina;
+function actualizarPuntuaciones(textoPersona, textoJugador) {
+    var txJugador = $('#datos-oponente')[0];
+    txJugador.value = textoJugador;
     var txPersona = $('#datos-persona')[0];
     txPersona.value = textoPersona;
 }
 /**
  * Inicio de Listeners
  */
-function reiniciar() {
-    juego.inicio();
-    limpiarCanvas();
-    cargarListeners();
-}
 function limpiarCanvas() {
     $('.canvas-seleccion').each(function (index, elem) {
         var can = elem;
@@ -343,18 +389,20 @@ function limpiarCanvas() {
         context.clearRect(0, 0, can.width, can.height);
     });
 }
-function cargarListeners() {
+function cargarListeners(juego) {
     $('.canvas-seleccion').unbind('click');
     $('.canvas-seleccion').bind('click', function (eventoJQuery) {
         //TODO
-        juego.revisarMovimiento(eventoJQuery.target.id);
+        if (juego.PartidaActiva) {
+            juego.hacerMovimiento(eventoJQuery.target.id);
+        }
     });
     $('#reiniciar').unbind('click');
-    $('#reiniciar').bind('click', reiniciar);
+    $('#reiniciar').bind('click', juego.reiniciar);
 }
 /**
  * Inicio de partida
 */
-var juego = new Partida();
-juego.inicio();
+//export var juego : Partida = new Partida();
+//juego.inicio();
 // cargarListeners(); 
