@@ -8,7 +8,7 @@ module ApplicationCable
 
     protected
     def find_verified_user
-        if email = User.find_by(id: session[:user_id])
+        if email = User.find_by(id: cookies[:user_id])
           email
         else
           reject_unauthorized_connection

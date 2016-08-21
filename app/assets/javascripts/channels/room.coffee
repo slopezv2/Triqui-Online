@@ -1,13 +1,13 @@
 
-
-App.room = App.cable.subscriptions.create "RoomChannel",
+$(App.room = App.cable.subscriptions.create "RoomChannel",
   connected: ->
     # Called when the subscription is ready for use on the server
-     @printMessage("Waiting for opponent...")
+     @printMessage("Esperando por oponente")
 
   printMessage: (message) ->
-    alert(message);
-
+    snackbarContainer = $('#demo-toast-example')[0];
+    data = { message: message, timeout: 5000 };
+    snackbarContainer.MaterialSnackbar.showSnackbar(data);
   disconnected: ->
     # Called when the subscription has been terminated by the server
 
@@ -15,6 +15,7 @@ App.room = App.cable.subscriptions.create "RoomChannel",
     # Called when there's incoming data on the websocket for this channel
     switch data.action
       when "game_start"
+        cargarListeners();
         App.board.position("start")
         App.board.orientation(data.msg)
         @printMessage("Game started! You play as #{data.msg}.")
@@ -48,4 +49,5 @@ $ ->
       else
         App.room.perform("make_move", move)
 
-  App.board = ChessBoard("chessboard", cfg)
+#App.board = ChessBoard("chessboard", cfg)
+);

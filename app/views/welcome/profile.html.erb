@@ -9,9 +9,7 @@
         <div><h5>Partidas Ganadas</h5><%= @user.won_games %></div>
         <div><h5>Partidas Perdidas</h5><%= @user.lost_games %></div>
         <div class="mdl-cell--3-offset">
-          <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-            Jugar Partida
-          </button>
+          <%= link_to 'Jugar Partida', welcome_game_path, method: :get, class: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" %>
       </div>
   </div>
   <div class="mdl-cell mdl-cell--4-col"></div>

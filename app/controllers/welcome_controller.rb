@@ -29,6 +29,7 @@ class WelcomeController < ApplicationController
        flash[:error] = "No ha iniciado session"
        redirect_to root_url
     end
+    cookies[:user_id] = session[:user_id]
   end
 
     def create
@@ -44,6 +45,7 @@ class WelcomeController < ApplicationController
 
   def salir
     session.delete(:user_id)
+    cookies.delete(:user_id)
     flash[:notice] = "Sesión cerrada exitosamente"
     redirect_to root_url
   end
