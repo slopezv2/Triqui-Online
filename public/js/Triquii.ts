@@ -1,4 +1,4 @@
-/// <reference path="../../../public/js/jquery.d.ts" />
+/// <reference path="jquery.d.ts" />
 
 /**
  * Representa un jugador
@@ -83,9 +83,8 @@ class Partida{
     private primeraVez = true;
     public inicio (partida_activa, nodo) : void{
         this.tablero = [[2,2,2],[2,2,2],[2,2,2]];
-        this.partidaActiva = partida_activa;
+        this.partidaActiva = partida_activa.msg;
         this.nodo = nodo;
-        this.primeraVez = !this.partidaActiva;   
     }
     get PartidaActiva(){
         return this.partidaActiva;
@@ -121,8 +120,6 @@ class Partida{
         }
     }
     public hacerMovimiento(idCanvas){
-        if(!this.primeraVez){
-            console.log(this.nodo);
             var caracter = this.oponente.Caracter;
             if(this.partidaActiva){
                 caracter = this.persona.Caracter;
@@ -172,8 +169,6 @@ class Partida{
                     this.nodo.room.unsubscribe(); 
                     window.location.replace("profile/");
                 }
-        }
-
     }
     // public revisarMovimiento(idCanvas : string){
     //     if(this.partidaActiva){
@@ -376,9 +371,9 @@ function mostrarMensaje(mensaje: string): void{
 }
 
 function actualizarPuntuaciones(textoPersona: string, textoJugador:string){
-    var txJugador = <HTMLTextAreaElement>$('#datos-oponente')[0];
+    var txJugador = <HTMLTextAreaElement>$('#datos-persona')[0];
     txJugador.value = textoJugador;
-    var txPersona = <HTMLTextAreaElement>$('#datos-persona')[0];
+    var txPersona = <HTMLTextAreaElement>$('#datos-oponente')[0];
     txPersona.value = textoPersona;
 }
 /**

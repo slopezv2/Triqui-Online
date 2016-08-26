@@ -17,8 +17,9 @@ $(App.room = App.cable.subscriptions.create "RoomChannel",
     switch data.action
       when "game_start"
         App.game.inicio(data, App);
+        console.log(App.game);
         cargarListeners(App.game);
-        @printMessage("Game started!")
+        @printMessage("El juego empezó!")
       when "make_move"
         App.game.hacerMovimiento(data.msg.message)
       when "opponent_forfeits"

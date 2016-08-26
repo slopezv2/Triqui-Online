@@ -1,4 +1,4 @@
-/// <reference path="../../../public/js/jquery.d.ts" />
+/// <reference path="jquery.d.ts" />
 /**
  * Representa un jugador
  */
@@ -92,9 +92,8 @@ var Partida = (function () {
     }
     Partida.prototype.inicio = function (partida_activa, nodo) {
         this.tablero = [[2, 2, 2], [2, 2, 2], [2, 2, 2]];
-        this.partidaActiva = partida_activa;
+        this.partidaActiva = partida_activa.msg;
         this.nodo = nodo;
-        this.primeraVez = !this.partidaActiva;
     };
     Object.defineProperty(Partida.prototype, "PartidaActiva", {
         get: function () {
@@ -128,58 +127,55 @@ var Partida = (function () {
         }
     };
     Partida.prototype.hacerMovimiento = function (idCanvas) {
-        if (!this.primeraVez) {
-            console.log(this.nodo);
-            var caracter = this.oponente.Caracter;
-            if (this.partidaActiva) {
-                caracter = this.persona.Caracter;
-            }
-            var numero = parseInt(idCanvas.charAt(1));
-            $('#' + idCanvas).unbind('click');
-            var canvas = $('#' + idCanvas)[0];
-            var ctx = canvas.getContext('2d');
-            this.dibujarJugada(ctx, caracter);
-            //alert(idCanvas);
-            switch (numero) {
-                case 0:
-                    this.tablero[0][0] = caracter;
-                    break;
-                case 1:
-                    this.tablero[0][1] = caracter;
-                    break;
-                case 2:
-                    this.tablero[0][2] = caracter;
-                    break;
-                case 3:
-                    this.tablero[1][0] = caracter;
-                    break;
-                case 4:
-                    this.tablero[1][1] = caracter;
-                    break;
-                case 5:
-                    this.tablero[1][2] = caracter;
-                    break;
-                case 6:
-                    this.tablero[2][0] = caracter;
-                    break;
-                case 7:
-                    this.tablero[2][1] = caracter;
-                    break;
-                case 8:
-                    this.tablero[2][2] = caracter;
-                    break;
-                default:
-                    break;
-            }
-            ;
-            if (this.partidaActiva) {
-                this.nodo.room.make_move(idCanvas);
-            }
-            this.partidaActiva = !this.partidaActiva;
-            if (this.verSiTerminoPartida()) {
-                this.nodo.room.unsubscribe();
-                window.location.replace("profile/");
-            }
+        var caracter = this.oponente.Caracter;
+        if (this.partidaActiva) {
+            caracter = this.persona.Caracter;
+        }
+        var numero = parseInt(idCanvas.charAt(1));
+        $('#' + idCanvas).unbind('click');
+        var canvas = $('#' + idCanvas)[0];
+        var ctx = canvas.getContext('2d');
+        this.dibujarJugada(ctx, caracter);
+        //alert(idCanvas);
+        switch (numero) {
+            case 0:
+                this.tablero[0][0] = caracter;
+                break;
+            case 1:
+                this.tablero[0][1] = caracter;
+                break;
+            case 2:
+                this.tablero[0][2] = caracter;
+                break;
+            case 3:
+                this.tablero[1][0] = caracter;
+                break;
+            case 4:
+                this.tablero[1][1] = caracter;
+                break;
+            case 5:
+                this.tablero[1][2] = caracter;
+                break;
+            case 6:
+                this.tablero[2][0] = caracter;
+                break;
+            case 7:
+                this.tablero[2][1] = caracter;
+                break;
+            case 8:
+                this.tablero[2][2] = caracter;
+                break;
+            default:
+                break;
+        }
+        ;
+        if (this.partidaActiva) {
+            this.nodo.room.make_move(idCanvas);
+        }
+        this.partidaActiva = !this.partidaActiva;
+        if (this.verSiTerminoPartida()) {
+            this.nodo.room.unsubscribe();
+            window.location.replace("profile/");
         }
     };
     // public revisarMovimiento(idCanvas : string){
@@ -392,9 +388,9 @@ function mostrarMensaje(mensaje) {
     snackbarContainer.MaterialSnackbar.showSnackbar(data);
 }
 function actualizarPuntuaciones(textoPersona, textoJugador) {
-    var txJugador = $('#datos-oponente')[0];
+    var txJugador = $('#datos-persona')[0];
     txJugador.value = textoJugador;
-    var txPersona = $('#datos-persona')[0];
+    var txPersona = $('#datos-oponente')[0];
     txPersona.value = textoPersona;
 }
 /**
