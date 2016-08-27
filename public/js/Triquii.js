@@ -174,7 +174,7 @@ var Partida = (function () {
         }
         this.partidaActiva = !this.partidaActiva;
         if (this.verSiTerminoPartida()) {
-            this.nodo.room.unsubscribe();
+            // this.nodo.room.unsubscribe(); 
             window.location.replace("profile/");
         }
     };
@@ -235,18 +235,21 @@ var Partida = (function () {
     //     }
     // }
     Partida.prototype.ganaJugador = function () {
-        mostrarGanador("El oponente");
+        this.nodo.room.result("lose");
+        mostrarGanador("el oponente");
         this.oponente.ganar();
         this.persona.perder();
         actualizarPuntuaciones(this.persona.estadisticasATexto(), this.oponente.estadisticasATexto());
     };
     Partida.prototype.ganaPersona = function () {
-        mostrarGanador("La Persona");
+        this.nodo.room.result("win");
+        mostrarGanador("usted");
         this.oponente.perder();
         this.persona.ganar();
         actualizarPuntuaciones(this.persona.estadisticasATexto(), this.oponente.estadisticasATexto());
     };
     Partida.prototype.empate = function () {
+        this.nodo.room.result("draw");
         mostrarGanador("Nadie, hay un empate");
         this.oponente.empatar();
         this.persona.empatar();

@@ -166,7 +166,7 @@ class Partida{
                 }
                 this.partidaActiva = !this.partidaActiva;
                 if (this.verSiTerminoPartida()){
-                    this.nodo.room.unsubscribe(); 
+                   // this.nodo.room.unsubscribe(); 
                     window.location.replace("profile/");
                 }
     }
@@ -228,18 +228,21 @@ class Partida{
     //     }
     // }
     private ganaJugador(): void{
-        mostrarGanador("El oponente");
+        this.nodo.room.result("lose")
+        mostrarGanador("el oponente");
         this.oponente.ganar();
         this.persona.perder();
         actualizarPuntuaciones(this.persona.estadisticasATexto(),this.oponente.estadisticasATexto());
     }
     private ganaPersona(): void{
-        mostrarGanador("La Persona");
+        this.nodo.room.result("win")
+        mostrarGanador("usted");
         this.oponente.perder();
         this.persona.ganar();
         actualizarPuntuaciones(this.persona.estadisticasATexto(),this.oponente.estadisticasATexto());
     }
     private empate(): void{
+        this.nodo.room.result("draw")
         mostrarGanador("Nadie, hay un empate");
         this.oponente.empatar();
         this.persona.empatar();
