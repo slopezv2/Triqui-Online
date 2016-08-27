@@ -18,6 +18,9 @@
     <span class="mdl-layout-title">Triqui</span>
     <nav class="mdl-navigation">
       <a class="mdl-navigation__link" href="/">Inicio</a>
+       <% if session[:user_id] %>
+          <%= link_to 'Perfil', welcome_profile_path, class:"mdl-navigation__link" %>
+       <% end %>   
     </nav>
   </div>
   

@@ -30,3 +30,6 @@ $(App.room = App.cable.subscriptions.create "RoomChannel",
 $ ->
   App.game = App.game = new Partida();
 );
+$(window).unload(() ->
+    App.room.unsubscribe();
+);
