@@ -174,6 +174,8 @@ var Partida = (function () {
         }
         this.partidaActiva = !this.partidaActiva;
         if (this.verSiTerminoPartida()) {
+            // this.nodo.room.unsubscribe();
+            window.location.replace("profile/");
         }
     };
     // public revisarMovimiento(idCanvas : string){
