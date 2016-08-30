@@ -12,6 +12,7 @@ class Game
   def self.forfeit(email)
     if winner = opponent_for(email)
       ActionCable.server.broadcast "player_#{winner}", {action: "opponent_forfeits"}
+      
     end
   end
 

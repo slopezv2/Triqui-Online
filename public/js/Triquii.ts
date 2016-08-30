@@ -166,8 +166,9 @@ class Partida{
                 }
                 this.partidaActiva = !this.partidaActiva;
                 if (this.verSiTerminoPartida()){
-                   // this.nodo.room.unsubscribe(); 
-                    window.location.replace("profile/");
+                   // this.nodo.room.unsubscribe();
+                    //setTimeout(window.location.replace("profile/"),5000);
+                    
                 }
     }
     // public revisarMovimiento(idCanvas : string){

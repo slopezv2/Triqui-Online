@@ -1,5 +1,6 @@
 # Be sure to restart your server when you modify this file. Action Cable runs in a loop that does not support auto reloading.
 class RoomChannel < ApplicationCable::Channel
+require 'user'
   def subscribed
     # stream_from "some_channel"
     stream_from "player_#{email}"
@@ -12,9 +13,17 @@ class RoomChannel < ApplicationCable::Channel
     Game.forfeit(email)
   end
 
-  def turn(movement)
-    ActionCable.server.broadcast "room_channel", message: data['movement']
+  def result(end_game)
+    case end_game["message"]
+      when "win"
+        email.win       
+      when "lose"
+        email.lose
+      when "draw"
+        email.draw
+    end
   end
+
   def make_move(data)
     Game.make_move(email, data)
   end
