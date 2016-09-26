@@ -1,9 +1,6 @@
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
-    identified_by :email
-    
-    def connect
-      self.email = find_verified_user
+    identified_by :emaillf.email = find_verified_user
     end
 
     protected

@@ -9,7 +9,7 @@
       <!-- Navigation. We hide it in small screens. -->
       <nav class="mdl-navigation mdl-layout--large-screen-only">
         <% if session[:user_id] %>
-          <a class="mdl-navigation__link" href="salir/">Salir</a>
+	  <%= link_to 'Salir', welcome_salir_path, method: :get, class: "mdl-navigation__link" %>
         <% end %>
       </nav>
     </div>
@@ -19,7 +19,7 @@
     <nav class="mdl-navigation">
       <a class="mdl-navigation__link" href="/">Inicio</a>
        <% if session[:user_id] %>
-          <%= link_to 'Perfil', welcome_profile_path, class:"mdl-navigation__link" %>
+          <%= link_to 'Perfil', welcome_profile_path, method: :get , class:"mdl-navigation__link" %>
        <% end %>   
     </nav>
   </div>
